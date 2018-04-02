@@ -1,7 +1,7 @@
-﻿@model IEnumerable<test.Models.Person>
+﻿@model IEnumerable<test.Models.User>
 
 @{
-   // ViewBag.Title = "My Table with Persons";
+   // ViewBag.Title = "My Table with Users";
     ViewBag.Message = "its crap";
 }
 
@@ -17,9 +17,6 @@
             @Html.DisplayNameFor(model => model.Id)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.name)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.username)
         </th>
         <th>
@@ -32,9 +29,6 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.username)

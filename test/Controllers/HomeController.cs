@@ -12,8 +12,8 @@ namespace test.Controllers
     {
         public ActionResult Index()
         {
-            var dataContext = new PersonDataContext();
-            var persons = (from m in dataContext.Persons
+            var dataContext = new UserDataContext();
+            var persons = (from m in dataContext.Users
                          select m);
    
             return View(persons);
@@ -29,16 +29,16 @@ namespace test.Controllers
         public ActionResult Login(String username, String password)
         {
             Console.WriteLine(username);
-            var dataContext = new PersonDataContext();
-            var persons = (from m in dataContext.Persons
+            var dataContext = new UserDataContext();
+            var users = (from m in dataContext.Users
                            select m);
 
-            foreach (Person person in persons)
+            foreach (User person in users)
             {
 
                 if(person.username.Trim().Equals(username) && person.password.Trim().Equals(password))
                 {
-                    ViewBag.Title = "Good Work Mr. " + person.name;
+                    //ViewBag.Title = "Good Work Mr. " + person.name;
                     return View("../Home/Success");
                 }
             }
