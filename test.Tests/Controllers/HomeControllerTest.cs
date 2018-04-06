@@ -20,17 +20,6 @@ namespace test.Tests.Controllers
             DataClasses1DataContext dataContext = new DataClasses1DataContext();
             IQueryable<Database.Person> data = from p in dataContext.Persons select p;
             Assert.IsTrue(data.Count() > 1);
-
-            var q =
-    from cust in dataContext.Persons
-    //where cust.name == "ivan"
-    select cust;
-
-            Console.WriteLine("people with a name: ");
-            foreach (var z in q)
-            {
-                Console.WriteLine("\t {0}", z.surname);
-            }
         }
         public void Index()
         {

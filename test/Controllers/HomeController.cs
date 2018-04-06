@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using test.Database;
 
 namespace test.Controllers
 {
@@ -12,19 +11,6 @@ namespace test.Controllers
     
         public ActionResult Index()
         {
-            DataClasses1DataContext dataContext = new DataClasses1DataContext();
-            var q =
-                from cust in dataContext.Persons
-                select cust;
-            Console.WriteLine("people with a name: ");
-            Console.WriteLine("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-            foreach (var z in q)
-            {
-                Console.WriteLine("\t {0}", z.surname);
-            }
-
-
-            Console.WriteLine();
             ViewBag.Message = "Login";
             return View();
          
