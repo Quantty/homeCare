@@ -19,10 +19,26 @@ namespace test.Controllers
             return View(persons);
             //return View();
         }
+        public ActionResult Edit(int id)
+        {
+            var dataContext = new UserDataContext();
+            var query = (from m in dataContext.Users
+                         where m.Id == id
+                         select m );
+            User user = query.First();
+            return View(user);
+        }
+        [HttpPost]
+        public ActionResult Save(User u)
+        {
+            var dataContext = new UserDataContext();
+         
+            return View("../Home/Index");
+        }
         [HttpGet]
         public ActionResult Login()
         {
-   
+            
             return View();
         }
         [HttpPost]
