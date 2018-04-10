@@ -18,6 +18,11 @@ namespace test
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+                name: "Get",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "MyViews", action = "Succes", id = UrlParameter.Optional }
+            );
         }
     }
 }
