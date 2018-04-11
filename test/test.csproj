@@ -212,8 +212,9 @@
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\Login\Success.cshtml" />
     <Content Include="Views\Home\TryAgain.cshtml" />
-    <Content Include="Views\Home\View.cshtml" />
     <Content Include="Views\Home\Edit.cshtml" />
+    <Content Include="Views\Home\Delete.cshtml" />
+    <Content Include="Views\Home\Create.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

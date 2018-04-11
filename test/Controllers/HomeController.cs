@@ -19,6 +19,18 @@ namespace test.Controllers
             return View(users);
     
         }
+        public ActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost, ActionName("Create")]
+        public ActionResult Save(User user)
+        {
+            var dataContext = new UserDataContext();
+            dataContext.Users.InsertOnSubmit(user);
+            dataContext.SubmitChanges();
+            return RedirectToAction("Index");
+        }
         public  ActionResult Edit(int? id)
         {
             ViewBag.Message = "Edit selected user ";
@@ -59,7 +71,7 @@ namespace test.Controllers
             query.First().type = user.type;
             dataContext.SubmitChanges();
             ViewBag.Message = "Field saved in the database";
-            return View();
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public ActionResult Login()
@@ -94,9 +106,19 @@ namespace test.Controllers
             return View();
 
         }
-        [HttpPost]
+
+        public ActionResult Delete(int? id)
+        {
+            var dataContext = new UserDataContext();
+            var query = (from m in dataContext.Users
+                         where m.Id == id
+                         select m);
+            User user = query.First();
+            return View(user);
+        }
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public void Delete(int id)
+        public ActionResult DeleteConfirm(int? id)
         {
             var dataContext = new UserDataContext();
             var query = (from m in dataContext.Users
@@ -104,6 +126,7 @@ namespace test.Controllers
                          select m);
             dataContext.Users.DeleteOnSubmit(query.First());
             dataContext.SubmitChanges();
+            return RedirectToAction("Index");
         }
 
         public ActionResult Contact()
