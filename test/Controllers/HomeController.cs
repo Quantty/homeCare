@@ -13,27 +13,53 @@ namespace test.Controllers
         public ActionResult Index()
         {
             var dataContext = new UserDataContext();
-            var persons = (from m in dataContext.Users
+            var users = (from m in dataContext.Users
                          select m);
    
-            return View(persons);
-            //return View();
+            return View(users);
+    
         }
-        public ActionResult Edit(int id)
+        public  ActionResult Edit(int? id)
+        {
+            ViewBag.Message = "Edit selected user ";
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                var dataContext = new UserDataContext();
+                var query = (from m in dataContext.Users
+                             where m.Id == id
+                             select m);
+                User user = query.First();
+                if(user == null)
+                {
+                    return HttpNotFound();
+                }
+                else
+                {
+                    return View(user);
+                }
+            }
+         
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public ActionResult Edit(int id,User user )
         {
             var dataContext = new UserDataContext();
             var query = (from m in dataContext.Users
-                         where m.Id == id
-                         select m );
-            User user = query.First();
-            return View(user);
-        }
-        [HttpPost]
-        public ActionResult Save(User u)
-        {
-            var dataContext = new UserDataContext();
-         
-            return View("../Home/Index");
+                        where m.Id == id
+                        select m);
+            query.First().Id = user.Id;
+            query.First().username = user.username;
+            query.First().password = user.password;
+            query.First().type = user.type;
+            dataContext.SubmitChanges();
+            ViewBag.Message = "Field saved in the database";
+            return View();
         }
         [HttpGet]
         public ActionResult Login()
@@ -66,6 +92,18 @@ namespace test.Controllers
             ViewBag.Message = "Bravo";
 
             return View();
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public void Delete(int id)
+        {
+            var dataContext = new UserDataContext();
+            var query = (from m in dataContext.Users
+                         where m.Id == id
+                         select m);
+            dataContext.Users.DeleteOnSubmit(query.First());
+            dataContext.SubmitChanges();
         }
 
         public ActionResult Contact()
