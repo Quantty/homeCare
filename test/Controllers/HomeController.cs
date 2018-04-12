@@ -66,6 +66,7 @@ namespace test.Controllers
                         where m.Id == id
                         select m);
             query.First().Id = user.Id;
+            query.First().person_id = user.person_id;
             query.First().username = user.username;
             query.First().password = user.password;
             query.First().type = user.type;
