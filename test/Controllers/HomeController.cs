@@ -10,14 +10,17 @@ namespace test.Controllers
     [HandleError]
     public class HomeController : Controller
     {
+        DbWrapper dataBase = new DbWrapper();
         public ActionResult Index()
         {
-            var dataContext = new UserDataContext();
-            var users = (from m in dataContext.Users
-                         select m);
-   
-            return View(users);
-    
+            return View(dataBase.getUsers());
+        }
+        public ActionResult HomePage()
+        {
+            
+
+            return View();
+
         }
         public ActionResult Create()
         {
@@ -26,51 +29,21 @@ namespace test.Controllers
         [HttpPost, ActionName("Create")]
         public ActionResult Save(User user)
         {
-            var dataContext = new UserDataContext();
-            dataContext.Users.InsertOnSubmit(user);
-            dataContext.SubmitChanges();
+            dataBase.addUser(user);
             return RedirectToAction("Index");
         }
         public  ActionResult Edit(int? id)
         {
             ViewBag.Message = "Edit selected user ";
-            if (id == null)
-            {
-                return HttpNotFound();
-            }
-            else
-            {
-                var dataContext = new UserDataContext();
-                var query = (from m in dataContext.Users
-                             where m.Id == id
-                             select m);
-                User user = query.First();
-                if(user == null)
-                {
-                    return HttpNotFound();
-                }
-                else
-                {
-                    return View(user);
-                }
-            }
-         
+            User user = dataBase.getUserById(id);
+            return View(user);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
 
         public ActionResult Edit(int id,User user )
         {
-            var dataContext = new UserDataContext();
-            var query = (from m in dataContext.Users
-                        where m.Id == id
-                        select m);
-            query.First().Id = user.Id;
-            query.First().username = user.username;
-            query.First().password = user.password;
-            query.First().type = user.type;
-            dataContext.SubmitChanges();
-            ViewBag.Message = "Field saved in the database";
+            dataBase.updateUser(id, user);
             return RedirectToAction("Index");
         }
         [HttpGet]
@@ -82,14 +55,10 @@ namespace test.Controllers
         [HttpPost]
         public ActionResult Login(String username, String password)
         {
-            Console.WriteLine(username);
-            var dataContext = new UserDataContext();
-            var users = (from m in dataContext.Users
-                           select m);
+            var users = dataBase.getUsers();
 
             foreach (User person in users)
             {
-
                 if(person.username.Trim().Equals(username) && person.password.Trim().Equals(password))
                 {
                     //ViewBag.Title = "Good Work Mr. " + person.name;
@@ -109,23 +78,14 @@ namespace test.Controllers
 
         public ActionResult Delete(int? id)
         {
-            var dataContext = new UserDataContext();
-            var query = (from m in dataContext.Users
-                         where m.Id == id
-                         select m);
-            User user = query.First();
+            User user = dataBase.getUserById(id);
             return View(user);
         }
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirm(int? id)
         {
-            var dataContext = new UserDataContext();
-            var query = (from m in dataContext.Users
-                         where m.Id == id
-                         select m);
-            dataContext.Users.DeleteOnSubmit(query.First());
-            dataContext.SubmitChanges();
+            dataBase.deleteUserById(id);
             return RedirectToAction("Index");
         }
 
